@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Entorno virtual
+venv/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/config.toml
+.streamlit/secrets.toml
+
+# Archivos temporales
+*.log
+*.tmp

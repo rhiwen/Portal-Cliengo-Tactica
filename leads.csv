@@ -1,0 +1,9 @@
+FechaIngreso,Servicio,CanalOrigen,Nombre,Telefono,Email,Estado,TipoDeCliente,Clasificacion,Notas
+2025-04-20 17:15:00,Internet,Chatbot,Juan Pérez,111223344,juan@example.com,Asesorado,Prospecto,Interesado,Cliente interesado en servicio de internet. Agendar llamada.
+2025-04-20 18:30:00,Internet,WhatsApp,Ana Gómez,112233445,ana@example.com,Pendiente,Prospecto,No Clasificado,"En espera de respuesta, contactar nuevamente."
+2025-04-20 19:00:00,Luz,Chatbot,Pedro Martínez,113344556,pedro@example.com,Descartado,Prospecto,No Clasificado,"Lead descartado, no está interesado."
+2025-04-21 17:45:00,Gas,WhatsApp,Laura Díaz,114455667,laura@example.com,Asesorado,Cliente,Interesado,"Cliente tiene dudas sobre la tarifa, pedir más info."
+2025-04-21 18:10:00,Luz,Chatbot,Mario Rodríguez,115566778,mario@example.com,Asesorado,Cliente,Interesado,"Llamar nuevamente para agendar cita."
+2025-04-21 19:30:00,Internet,WhatsApp,Lucía Fernández,116677889,lucia@example.com,Pendiente,Prospecto,No Clasificado,"Esperando confirmación, enviar detalle por email."
+2025-04-22 20:00:00,Luz,Chatbot,Carlos Méndez,117788990,carlos@example.com,Descartado,Prospecto,No Clasificado,"Cliente no tiene interés, no volver a contactar."
+2025-04-22 21:10:00,Gas,WhatsApp,María López,118899001,maria@example.com,Asesorado,Cliente,Interesado,"Confirmar detalles del servicio de gas, agendar llamada."
