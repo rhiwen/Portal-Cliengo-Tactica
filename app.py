@@ -1,111 +1,95 @@
 import streamlit as st
-import pandas as pd
-import plotly.express as px
+from utils.data_loader import cargar_datos
 
 # Configuración básica de la página
 st.set_page_config(
-    page_title="Portal Cliengo-Táctica",
+    page_title="Portal SPS: Cliengo-Tactica",
     page_icon="📊",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Título de la app
-st.title("📊 Portal de Leads: Cliengo - Táctica")
+# Estilos CSS personalizados
+st.markdown("""
+    <style>
+    .main-header {
+        font-size: 2.5rem;
+        color: #003366;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    .sub-header {
+        font-size: 1.5rem;
+        color: #0066cc;
+        margin-bottom: 0.5rem;
+    }
+    .card {
+        /*background-color: #f8f9fa;*/
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+        margin-bottom: 1rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-# Cargar datos
-@st.cache_data
-def cargar_datos():
-    return pd.read_csv("leads.csv", parse_dates=["FechaIngreso"])
+# Título y descripción
+st.markdown('<h1 class="main-header">🔔 Portal de Leads SPS: Cliengo - Táctica</h1>', unsafe_allow_html=True)
 
+# Información principal
+st.markdown("""
+<div class="card">
+<h2 class="sub-header">Bienvenido al Portal de Leads de SPS</h2>
+<p>Esta aplicación permite visualizar y analizar el flujo de leads que ingresan a través de Cliengo 
+(Chatbot y WhatsApp) y su integración con el CRM Táctica.</p>
+
+<p>Utilice la barra lateral para navegar entre las diferentes secciones:</p>
+<ul>
+    <li><b>Página Principal</b>: Resumen general y estadísticas clave</li>
+    <li><b>Leads por Horario</b>: Análisis del caudal de leads por franjas horarias</li>
+    <li><b>Leads por Servicio</b>: Distribución de leads por categoría y servicio</li>
+    <li><b>Detalles</b>: Exploración detallada de los datos</li>
+</ul>
+</div>
+""", unsafe_allow_html=True)
+
+# Cargar datos una sola vez
 df = cargar_datos()
 
-# Convertir columnas de fechas
-if "FechaIngreso" in df.columns:
-    df["FechaIngreso"] = pd.to_datetime(df["FechaIngreso"], errors="coerce")
-else:
-    st.error("El archivo no contiene una columna llamada 'FechaIngreso'.")
-    st.stop()
+# Calcular métricas clave
+total_leads = len(df)
+leads_asesorados = len(df[df['Estado'] == 'Asesorado'])
+leads_pendientes = len(df[df['Estado'] == 'Pendiente'])
+leads_descartados = len(df[df['Estado'] == 'Descartado'])
 
-# Mapeo de días a español
-dias_es = {
-    "Monday": "Lunes",
-    "Tuesday": "Martes",
-    "Wednesday": "Miércoles",
-    "Thursday": "Jueves",
-    "Friday": "Viernes",
-    "Saturday": "Sábado",
-    "Sunday": "Domingo"
-}
+# Mostrar KPIs
+st.markdown('<h2 class="sub-header">Resumen de Leads</h2>', unsafe_allow_html=True)
+col1, col2, col3, col4 = st.columns(4)
 
-# ---- Sidebar para filtros ----
-st.sidebar.header("Filtrar Datos")
+with col1:
+    st.metric("Total Leads", total_leads)
 
-# Selección de fecha de inicio y fin
-fecha_inicio = st.sidebar.date_input("Seleccionar fecha de inicio", df["FechaIngreso"].min())
-fecha_fin = st.sidebar.date_input("Seleccionar fecha de fin", df["FechaIngreso"].max())
+with col2:
+    st.metric("Asesorados", leads_asesorados, f"{leads_asesorados/total_leads:.1%}")
 
-# Filtrar datos por las fechas seleccionadas
-df_filtrado = df[(df["FechaIngreso"] >= pd.to_datetime(fecha_inicio)) & (df["FechaIngreso"] <= pd.to_datetime(fecha_fin))]
+with col3:
+    st.metric("Pendientes", leads_pendientes, f"{leads_pendientes/total_leads:.1%}")
 
-# Extraer hora de la columna 'FechaIngreso'
-df_filtrado["HoraIngreso"] = df_filtrado["FechaIngreso"].dt.hour
+with col4:
+    st.metric("Descartados", leads_descartados, f"{leads_descartados/total_leads:.1%}")
 
-# ---- Opción de visualización (Pantallazo Semanal, Semana Detallada, Detalle Diario) ----
-opcion = st.sidebar.radio("Seleccionar vista:", ("Pantallazo Semanal", "Semana Detallada", "Detalle Diario"))
+# Información adicional
+st.markdown("""
+<div class="card">
+<h2 class="sub-header">Sobre los datos</h2>
+<p>Actualmente los datos se cargan desde un archivo CSV de prueba. En futuras versiones, 
+se implementará la conexión directa a la API de Táctica para obtener datos en tiempo real.</p>
 
-# ---- Pantallazo Semanal ----
-if opcion == "Pantallazo Semanal":
-    st.header("📅 Pantallazo Semanal")
-    
-    # Agregar columna con el día de la semana en español
-    df_filtrado["DiaSemana"] = df_filtrado["FechaIngreso"].dt.day_name().map(dias_es)
+<p><b>Nota importante:</b> Los reportes están diseñados según los requerimientos específicos 
+de SPS para analizar los leads entre las 17:00 y 21:00 horas y su clasificación por servicios.</p>
+</div>
+""", unsafe_allow_html=True)
 
-    # Agrupar datos por día de la semana y hora
-    df_semanal = df_filtrado.groupby(["DiaSemana", "HoraIngreso"]).size().reset_index(name="CantidadLeads")
-
-    # Ordenar por día de la semana
-    dias_orden = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
-    df_semanal["DiaSemana"] = pd.Categorical(df_semanal["DiaSemana"], categories=dias_orden, ordered=True)
-    df_semanal = df_semanal.sort_values("DiaSemana")
-
-    # Crear gráfico semanal
-    fig_semanal = px.bar(df_semanal, x="DiaSemana", y="CantidadLeads", color="HoraIngreso",
-                        labels={"DiaSemana": "Día de la Semana", "CantidadLeads": "Cantidad de Leads", "HoraIngreso": "Hora"},
-                        title="Cantidad de Leads por Día y Hora",
-                        color_continuous_scale="Viridis")
-
-    # Mostrar gráfico
-    st.plotly_chart(fig_semanal, use_container_width=True)
-
-# ---- Semana Detallada ----
-elif opcion == "Semana Detallada":
-    st.header("📊 Semana Detallada (por Día y Horario)")
-
-    # Agrupar por día de la semana y hora
-    df_semana_detallada = df_filtrado.groupby([df_filtrado["FechaIngreso"].dt.date, "HoraIngreso"]).size().reset_index(name="CantidadLeads")
-
-    # Crear gráfico detallado por día y hora
-    fig_semana_detallada = px.bar(df_semana_detallada, x="FechaIngreso", y="CantidadLeads", color="HoraIngreso",
-                                labels={"FechaIngreso": "Fecha", "CantidadLeads": "Cantidad de Leads", "HoraIngreso": "Hora"},
-                                title="Leads Detallados por Día y Hora",
-                                color_continuous_scale="Cividis")
-
-    # Mostrar gráfico
-    st.plotly_chart(fig_semana_detallada, use_container_width=True)
-
-# ---- Detalle Diario ----
-else:
-    st.header("📅 Detalle Diario")
-
-    # Crear gráfico para detalle diario
-    df_diario = df_filtrado.groupby([df_filtrado["FechaIngreso"].dt.date, "HoraIngreso"]).size().reset_index(name="CantidadLeads")
-    fig_diario = px.bar(df_diario, x="FechaIngreso", y="CantidadLeads", color="HoraIngreso",
-                        labels={"FechaIngreso": "Fecha", "CantidadLeads": "Cantidad de Leads", "HoraIngreso": "Hora"},
-                        title="Leads por Día y Hora",
-                        color_continuous_scale="Blues")
-
-    # Mostrar gráfico
-    st.plotly_chart(fig_diario, use_container_width=True)
-
-# ---- Footer ----
+# Pie de página
 st.markdown("---")
+st.markdown("© 2025 - Portal de Leads SPS | Versión 1.0")

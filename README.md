@@ -1,77 +1,106 @@
-## 📊 Portal Cliengo-Táctica
+# 🔔 Portal SPS: Cliengo-Táctica
 
-Este proyecto es un prototipo rápido desarrollado con Streamlit y Plotly, cuyo objetivo es visualizar y analizar el flujo de leads que ingresan a través de Cliengo y su integración con Táctica CRM.
+Este proyecto es una aplicación desarrollada con Streamlit y Plotly para visualizar y analizar el flujo de leads de SPS (empresa de alarmas) que ingresan a través de Cliengo (Chatbot y WhatsApp) y su integración con Táctica CRM.
 
-# 🚀 Objetivo
+## 🚀 Objetivos
 
-    Relevar y presentar información clave del proceso comercial:
+El portal permite:
 
-        📈 Volumen de leads por horario.
+- 📈 Visualizar el caudal de leads por franjas horarias, con enfoque en 17:00-21:00 hs.
+- 📊 Analizar leads por día de la semana (L-S, excluyendo domingos)
+- 📋 Explorar la distribución por tipo de servicio de alarma y canal de origen
+- 🔍 Realizar análisis detallados con filtros avanzados
 
-        📋 Leads por categoría y tipo de servicio.
+## 🛠️ Tecnologías Utilizadas
 
-# 🛠️ Tecnologías Utilizadas
+- **Python 3.10+**
+- **Streamlit 1.44+**: Framework para crear aplicaciones web interactivas
+- **Plotly 6.0+**: Biblioteca para visualizaciones interactivas
+- **Pandas 2.2+**: Procesamiento y análisis de datos
 
-    Python 3.10+
+## 📂 Estructura del Proyecto
 
-    Streamlit
-
-    Plotly
-
-    Pandas
-
-# 📂 Estructura del Proyecto
-
+```
 /Portal-Cliengo-Tactica/
 │
-├── app.py               # Aplicación principal de Streamlit
-├── leads.csv            # Archivo de datos de prueba
-├── requirements.txt     # Dependencias del proyecto
-├── .gitignore           # Exclusiones para Git
-├── README.md            # Documentación del proyecto
-└── /venv/               # Entorno virtual (excluido de Git)
+├── app.py                  # Aplicación principal (punto de entrada)
+├── pages/                  # Carpeta para páginas adicionales
+│   ├── 1_Leads_Horario.py  # Página de análisis por horario
+│   ├── 2_Leads_Servicio.py # Página de análisis por servicio/categoría
+│   └── 3_Detalles.py       # Página para ver datos detallados
+├── utils/                  # Utilidades compartidas
+│   └── data_loader.py      # Funciones para cargar y procesar datos
+├── leads.csv               # Datos de prueba
+├── requirements.txt        # Dependencias del proyecto
+└── README.md               # Documentación del proyecto
+```
 
-# 🧪 Instalación
+## 🧪 Instalación
 
-    Clonar el repositorio:
+1. **Clonar el repositorio:**
 
+```bash
 git clone https://github.com/rhiwen/Portal-Cliengo-Tactica.git
 cd Portal-Cliengo-Tactica
+```
 
-    Crear y activar el entorno virtual:
+2. **Crear y activar el entorno virtual:**
 
+```bash
 python -m venv venv
+
 # Windows
 venv\Scripts\activate
+
 # Mac/Linux
 source venv/Scripts/activate
+```
 
-    Instalar dependencias:
+3. **Instalar dependencias:**
 
+```bash
 pip install -r requirements.txt
+```
 
-    Ejecutar la aplicación:
+4. **Ejecutar la aplicación:**
 
+```bash
 streamlit run app.py
+```
 
-# 📈 Funcionalidades
+## 📈 Funcionalidades
 
-    Reporte de caudal de leads: visualización de cantidad de leads ingresados por hora, con filtro especial entre las 17:00 y las 21:00 hs.
+### Página Principal
+- Resumen general y métricas clave
+- Dashboard con KPIs principales
 
-    Reporte de leads por categoría/servicio: visualización del volumen diario clasificado por tipo de servicio y canal de origen.
+### Leads por Horario
+- Visualización de leads por hora, con enfoque en 17:00-21:00
+- Análisis por día de la semana (L-S)
+- Heatmap de distribución día-hora
 
-# 🔮 Mejoras Futuras
+### Leads por Servicio
+- Distribución por tipo de servicio de alarma
+- Análisis por canal de origen (Chatbot/WhatsApp)
+- Evolución temporal por servicio
 
-    Conexión directa a base de datos o APIs.
+### Exploración Detallada
+- Filtros avanzados por múltiples criterios
+- Búsqueda por texto en campos relevantes
+- Exportación de datos filtrados
+- Análisis de efectividad por servicio y canal
 
-    Filtros dinámicos para fechas, canales y categorías.
+## 🔮 Próximas Mejoras
 
-    Segmentaciones personalizadas por estado del lead.
+- Conexión directa a la API de Táctica para datos en tiempo real
+- Nuevas visualizaciones para análisis de efectividad comercial
+- Filtros más avanzados para segmentación de leads
+- Paneles personalizados para diferentes roles de usuario
+- Alertas automatizadas para caudales de leads fuera de rango
 
-    Paneles multiusuario.
+## 📝 Notas
 
-# 🧹 Notas
-
-    Este es un prototipo inicial. Los datos actuales provienen de un CSV de prueba.
-
-    A medida que se formalice el proceso en Táctica, se actualizarán campos y reportes.
+- Este proyecto está en desarrollo activo.
+- Actualmente los datos se cargan desde un CSV de prueba.
+- En futuras versiones se implementará la conexión a la API de Táctica.
+- El portal está optimizado para las necesidades específicas de SPS como empresa de alarmas.
