@@ -19,57 +19,93 @@ def cargar_datos():
 
 df = cargar_datos()
 
-# Mostrar datos
-with st.expander("🔍 Ver datos crudos"):
-    st.dataframe(df)
+# Convertir columnas de fechas
+if "FechaIngreso" in df.columns:
+    df["FechaIngreso"] = pd.to_datetime(df["FechaIngreso"], errors="coerce")
+else:
+    st.error("El archivo no contiene una columna llamada 'FechaIngreso'.")
+    st.stop()
 
-# ---- Reporte 1: Caudal de leads entre 17:00 y 21:00 hs ----
-st.header("📈 Caudal de Leads por Horario")
+# Mapeo de días a español
+dias_es = {
+    "Monday": "Lunes",
+    "Tuesday": "Martes",
+    "Wednesday": "Miércoles",
+    "Thursday": "Jueves",
+    "Friday": "Viernes",
+    "Saturday": "Sábado",
+    "Sunday": "Domingo"
+}
 
-# Crear nueva columna de hora
-df["HoraIngreso"] = df["FechaIngreso"].dt.hour
+# ---- Sidebar para filtros ----
+st.sidebar.header("Filtrar Datos")
 
-# Filtrar leads entre 17 y 21 hs
-df_franja = df[(df["HoraIngreso"] >= 17) & (df["HoraIngreso"] <= 21)]
+# Selección de fecha de inicio y fin
+fecha_inicio = st.sidebar.date_input("Seleccionar fecha de inicio", df["FechaIngreso"].min())
+fecha_fin = st.sidebar.date_input("Seleccionar fecha de fin", df["FechaIngreso"].max())
 
-# Agrupar por hora
-leads_por_hora = df.groupby("HoraIngreso").size().reset_index(name="CantidadLeads")
-leads_franja = df_franja.groupby("HoraIngreso").size().reset_index(name="CantidadLeads")
+# Filtrar datos por las fechas seleccionadas
+df_filtrado = df[(df["FechaIngreso"] >= pd.to_datetime(fecha_inicio)) & (df["FechaIngreso"] <= pd.to_datetime(fecha_fin))]
 
-# Gráfico general de leads por hora
-fig_general = px.bar(leads_por_hora, x="HoraIngreso", y="CantidadLeads",
-                    labels={"HoraIngreso": "Hora del día", "CantidadLeads": "Cantidad de Leads"},
-                    title="Cantidad de Leads por Hora (Todo el día)",
-                    color_discrete_sequence=["#636EFA"])
+# Extraer hora de la columna 'FechaIngreso'
+df_filtrado["HoraIngreso"] = df_filtrado["FechaIngreso"].dt.hour
 
-# Gráfico filtrado para 17-21 hs
-fig_franja = px.bar(leads_franja, x="HoraIngreso", y="CantidadLeads",
-                    labels={"HoraIngreso": "Hora (17 a 21)", "CantidadLeads": "Cantidad de Leads"},
-                    title="Cantidad de Leads entre 17:00 y 21:00",
-                    color_discrete_sequence=["#EF553B"])
+# ---- Opción de visualización (Pantallazo Semanal, Semana Detallada, Detalle Diario) ----
+opcion = st.sidebar.radio("Seleccionar vista:", ("Pantallazo Semanal", "Semana Detallada", "Detalle Diario"))
 
-# Mostrar gráficos
-col1, col2 = st.columns(2)
-col1.plotly_chart(fig_general, use_container_width=True)
-col2.plotly_chart(fig_franja, use_container_width=True)
+# ---- Pantallazo Semanal ----
+if opcion == "Pantallazo Semanal":
+    st.header("📅 Pantallazo Semanal")
+    
+    # Agregar columna con el día de la semana en español
+    df_filtrado["DiaSemana"] = df_filtrado["FechaIngreso"].dt.day_name().map(dias_es)
 
-# ---- Reporte 2: Leads por Categoría y Servicio ----
-st.header("📋 Leads por Categoría y Servicio")
+    # Agrupar datos por día de la semana y hora
+    df_semanal = df_filtrado.groupby(["DiaSemana", "HoraIngreso"]).size().reset_index(name="CantidadLeads")
 
-# Agrupar
-leads_categoria = df.groupby(["FechaIngreso", "Servicio", "CanalOrigen"]).size().reset_index(name="CantidadLeads")
+    # Ordenar por día de la semana
+    dias_orden = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+    df_semanal["DiaSemana"] = pd.Categorical(df_semanal["DiaSemana"], categories=dias_orden, ordered=True)
+    df_semanal = df_semanal.sort_values("DiaSemana")
 
-# Gráfico
-fig_categoria = px.sunburst(
-    leads_categoria,
-    path=["Servicio", "CanalOrigen"],
-    values="CantidadLeads",
-    title="Distribución de Leads por Servicio y Canal de Origen",
-    color_discrete_sequence=px.colors.qualitative.Pastel
-)
+    # Crear gráfico semanal
+    fig_semanal = px.bar(df_semanal, x="DiaSemana", y="CantidadLeads", color="HoraIngreso",
+                        labels={"DiaSemana": "Día de la Semana", "CantidadLeads": "Cantidad de Leads", "HoraIngreso": "Hora"},
+                        title="Cantidad de Leads por Día y Hora",
+                        color_continuous_scale="Viridis")
 
-st.plotly_chart(fig_categoria, use_container_width=True)
+    # Mostrar gráfico
+    st.plotly_chart(fig_semanal, use_container_width=True)
+
+# ---- Semana Detallada ----
+elif opcion == "Semana Detallada":
+    st.header("📊 Semana Detallada (por Día y Horario)")
+
+    # Agrupar por día de la semana y hora
+    df_semana_detallada = df_filtrado.groupby([df_filtrado["FechaIngreso"].dt.date, "HoraIngreso"]).size().reset_index(name="CantidadLeads")
+
+    # Crear gráfico detallado por día y hora
+    fig_semana_detallada = px.bar(df_semana_detallada, x="FechaIngreso", y="CantidadLeads", color="HoraIngreso",
+                                labels={"FechaIngreso": "Fecha", "CantidadLeads": "Cantidad de Leads", "HoraIngreso": "Hora"},
+                                title="Leads Detallados por Día y Hora",
+                                color_continuous_scale="Cividis")
+
+    # Mostrar gráfico
+    st.plotly_chart(fig_semana_detallada, use_container_width=True)
+
+# ---- Detalle Diario ----
+else:
+    st.header("📅 Detalle Diario")
+
+    # Crear gráfico para detalle diario
+    df_diario = df_filtrado.groupby([df_filtrado["FechaIngreso"].dt.date, "HoraIngreso"]).size().reset_index(name="CantidadLeads")
+    fig_diario = px.bar(df_diario, x="FechaIngreso", y="CantidadLeads", color="HoraIngreso",
+                        labels={"FechaIngreso": "Fecha", "CantidadLeads": "Cantidad de Leads", "HoraIngreso": "Hora"},
+                        title="Leads por Día y Hora",
+                        color_continuous_scale="Blues")
+
+    # Mostrar gráfico
+    st.plotly_chart(fig_diario, use_container_width=True)
 
 # ---- Footer ----
 st.markdown("---")
-

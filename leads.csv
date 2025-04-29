@@ -1,9 +1,33 @@
 FechaIngreso,Servicio,CanalOrigen,Nombre,Telefono,Email,Estado,TipoDeCliente,Clasificacion,Notas
-2025-04-20 17:15:00,Internet,Chatbot,Juan Pérez,111223344,juan@example.com,Asesorado,Prospecto,Interesado,Cliente interesado en servicio de internet. Agendar llamada.
-2025-04-20 18:30:00,Internet,WhatsApp,Ana Gómez,112233445,ana@example.com,Pendiente,Prospecto,No Clasificado,"En espera de respuesta, contactar nuevamente."
-2025-04-20 19:00:00,Luz,Chatbot,Pedro Martínez,113344556,pedro@example.com,Descartado,Prospecto,No Clasificado,"Lead descartado, no está interesado."
-2025-04-21 17:45:00,Gas,WhatsApp,Laura Díaz,114455667,laura@example.com,Asesorado,Cliente,Interesado,"Cliente tiene dudas sobre la tarifa, pedir más info."
-2025-04-21 18:10:00,Luz,Chatbot,Mario Rodríguez,115566778,mario@example.com,Asesorado,Cliente,Interesado,"Llamar nuevamente para agendar cita."
-2025-04-21 19:30:00,Internet,WhatsApp,Lucía Fernández,116677889,lucia@example.com,Pendiente,Prospecto,No Clasificado,"Esperando confirmación, enviar detalle por email."
-2025-04-22 20:00:00,Luz,Chatbot,Carlos Méndez,117788990,carlos@example.com,Descartado,Prospecto,No Clasificado,"Cliente no tiene interés, no volver a contactar."
-2025-04-22 21:10:00,Gas,WhatsApp,María López,118899001,maria@example.com,Asesorado,Cliente,Interesado,"Confirmar detalles del servicio de gas, agendar llamada."
+2025-04-20 17:15:00,AlarmaHogar,Chatbot,Juan Pérez,111223344,juan@example.com,Asesorado,Prospecto,Interesado,Cliente interesado en Alarma para hogar. Agendar llamada.
+2025-04-20 18:30:00,Alarma+Cam,WhatsApp,Ana Gómez,112233445,ana@example.com,Pendiente,Prospecto,No Clasificado,En espera de respuesta: contactar nuevamente.
+2025-04-20 19:00:00,Alarma+Cerco,Chatbot,Pedro Martínez,113344556,pedro@example.com,Descartado,Prospecto,No Clasificado,Lead descartado: no está interesado.
+2025-04-21 17:45:00,Alarma+Cam+Cerco,WhatsApp,Laura Díaz,114455667,laura@example.com,Asesorado,Cliente,Interesado,Cliente consultando sobre combo completo de alarma y cerco.
+2025-04-21 18:10:00,SPSCare,Chatbot,Mario Rodríguez,115566778,mario@example.com,Asesorado,Cliente,Interesado,Consulta sobre servicio de asistencia médica SPSCare.
+2025-04-21 19:30:00,AlarmaHogar,WhatsApp,Lucía Fernández,116677889,lucia@example.com,Pendiente,Prospecto,No Clasificado,Esperando confirmación: enviar detalle por email.
+2025-04-22 20:00:00,Vehicular,Chatbot,Carlos Méndez,117788990,carlos@example.com,Descartado,Prospecto,No Clasificado,No interesado en servicios vehiculares.
+2025-04-22 21:10:00,Alarma+Cam,WhatsApp,María López,118899001,maria@example.com,Asesorado,Cliente,Interesado,Interesada en sistema de alarma con cámaras.
+2025-04-22 10:00:00,AlarmaHogar,Chatbot,Raúl Ibáñez,119900112,raul@example.com,Pendiente,Prospecto,No Clasificado,Consulta para instalación domiciliaria.
+2025-04-22 14:30:00,SPSCare,WhatsApp,Florencia Ruiz,120011223,flor@example.com,Asesorado,Prospecto,Interesado,Cliente interesado en protección médica.
+2025-04-23 17:20:00,Alarma+Cerco,Chatbot,Nicolás Vera,121122334,nico@example.com,Asesorado,Cliente,Interesado,Consulta de precios por cerco eléctrico.
+2025-04-23 18:50:00,Alarma+Cam,WhatsApp,Victoria Salas,122233445,vicky@example.com,Pendiente,Prospecto,No Clasificado,Requiere demo de cámara de seguridad.
+2025-04-23 19:15:00,Alarma+Cam+Cerco,Chatbot,Martín Funes,123344556,martin@example.com,Asesorado,Cliente,Interesado,Cliente quiere solución integral.
+2025-04-23 20:05:00,SPSCare,WhatsApp,Camila Rey,124455667,camila@example.com,Pendiente,Prospecto,No Clasificado,Consultar opciones de planes médicos.
+2025-04-24 17:40:00,Vehicular,Chatbot,Gustavo Peralta,125566778,peralta@example.com,Asesorado,Cliente,Interesado,Instalación de GPS y seguro vehicular.
+2025-04-24 18:25:00,Alarma+Cerco,WhatsApp,Cecilia Soto,126677889,ceci@example.com,Pendiente,Prospecto,No Clasificado,Enviar cotización para cerco de seguridad.
+2025-04-24 09:15:00,AlarmaHogar,Chatbot,Federico Quintana,127788990,fede@example.com,Pendiente,Prospecto,No Clasificado,Consulta por alarma básica.
+2025-04-24 11:30:00,BLACKKEY,WhatsApp,Débora Chávez,128899001,debora@example.com,Asesorado,Cliente,Interesado,Cliente interesado en soluciones avanzadas BLACKKEY.
+2025-04-24 12:45:00,Alarma+Cam,Chatbot,Matías Blanco,129900112,matias@example.com,Pendiente,Prospecto,No Clasificado,Consulta técnica sobre cámaras.
+2025-04-25 17:50:00,AlarmaHogar,Chatbot,Sofía Medina,130011223,sofia@example.com,Asesorado,Cliente,Interesado,Interesada en alarma para departamento.
+2025-04-25 18:40:00,Alarma+Cam+Cerco,WhatsApp,Agustín Rivero,131122334,agus@example.com,Pendiente,Prospecto,No Clasificado,Agendar visita técnica para evaluación.
+2025-04-25 19:05:00,SPSCare,Chatbot,Mariana Ferreira,132233445,mariana@example.com,Asesorado,Cliente,Interesado,Interesada en plan de cobertura médica.
+2025-04-25 20:30:00,Vehicular,WhatsApp,Tomás Cabrera,133344556,tomas@example.com,Pendiente,Prospecto,No Clasificado,Protección vehicular en zona urbana.
+2025-04-25 08:50:00,Alarma+Cerco,Chatbot,Brenda Ortiz,134455667,brenda@example.com,Pendiente,Prospecto,No Clasificado,Consulta por instalación de cerco eléctrico.
+2025-04-25 13:20:00,Alarma+Cam,WhatsApp,Luciano Herrera,135566778,luciano@example.com,Asesorado,Cliente,Interesado,Agendar prueba de cámaras.
+2025-04-26 17:35:00,Alarma+Cam+Cerco,Chatbot,Romina Paredes,136677889,romina@example.com,Asesorado,Cliente,Interesado,Solicitud de cotización completa.
+2025-04-26 18:15:00,AlarmaHogar,WhatsApp,Andrés Cardozo,137788990,andres@example.com,Pendiente,Prospecto,No Clasificado,Consulta por alarma para country.
+2025-04-26 19:50:00,SPSCare,Chatbot,Juliana Morales,138899001,juliana@example.com,Asesorado,Cliente,Interesado,Interesada en cobertura premium SPSCare.
+2025-04-26 20:10:00,VigiladorVirtual,WhatsApp,Germán Duarte,139900112,german@example.com,Pendiente,Prospecto,No Clasificado,Interés en servicio de vigilancia virtual remota.
+2025-04-27 10:30:00,Alarma+Cam,Chatbot,Patricia Ayala,140011223,patricia@example.com,Pendiente,Prospecto,No Clasificado,Consulta para oficina pequeña.
+2025-04-27 15:00:00,Alarma+Cerco,WhatsApp,Santiago Bazán,141122334,santiago@example.com,Asesorado,Cliente,Interesado,Cierre de proyecto para barrio privado.
+2025-04-27 17:10:00,AlarmaHogar,Chatbot,Valentina Nuñez,142233445,valentina@example.com,Asesorado,Cliente,Interesado,Firma de contrato programada.
