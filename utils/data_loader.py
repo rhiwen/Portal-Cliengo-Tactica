@@ -2,38 +2,34 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta
 
-# Función para cargar y procesar los datos iniciales
+# Función para cargar y procesar los datos iniciales (ahora sin usar locale)
 @st.cache_data
 def cargar_datos():
-    """
-    Carga los datos desde el archivo CSV y realiza transformaciones básicas.
-    
-    Returns:
-        DataFrame: Datos de leads procesados con columnas adicionales
-    """
-    # Cargar datos desde CSV
     df = pd.read_csv("leads.csv", parse_dates=["FechaIngreso"])
     
-    # Crear columnas derivadas útiles para análisis
     df["HoraIngreso"] = df["FechaIngreso"].dt.hour
     df["MinutoIngreso"] = df["FechaIngreso"].dt.minute
     df["Bloque30min"] = df["HoraIngreso"].astype(str) + ":" + ((df["MinutoIngreso"] // 30) * 30).astype(str).str.zfill(2)
     
-    # Extraer información de día de la semana (0=Lunes, 6=Domingo)
     df["DiaSemana"] = df["FechaIngreso"].dt.dayofweek
-    df["NombreDiaSemana"] = df["FechaIngreso"].dt.day_name(locale='es_ES')
     
-    # Crear una versión corta del nombre del día (L, M, X, J, V, S, D)
+    # Mapeo manual de los días de la semana
+    dias_semana_mapping = {
+        0: 'Lunes',
+        1: 'Martes',
+        2: 'Miércoles',
+        3: 'Jueves',
+        4: 'Viernes',
+        5: 'Sábado',
+        6: 'Domingo'
+    }
+    df["NombreDiaSemana"] = df["DiaSemana"].map(dias_semana_mapping)
+    
     dias_mapping = {0: 'L', 1: 'M', 2: 'X', 3: 'J', 4: 'V', 5: 'S', 6: 'D'}
     df["DiaCodigo"] = df["DiaSemana"].map(dias_mapping)
     
-    # Calcular semana del año
     df["Semana"] = df["FechaIngreso"].dt.isocalendar().week
     
-    # Filtrar los domingos si es necesario (según requisito)
-    # df = df[df["DiaSemana"] != 6]  # Descomentar para eliminar los domingos
-    
-    # Limpiar y normalizar datos
     for columna in ['Servicio', 'CanalOrigen', 'Estado', 'TipoDeCliente', 'Clasificacion']:
         if columna in df.columns:
             df[columna] = df[columna].fillna('No especificado')
