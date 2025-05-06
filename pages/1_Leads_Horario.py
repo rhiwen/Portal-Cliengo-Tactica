@@ -207,7 +207,7 @@ with st.expander("ℹ️ Información sobre este reporte"):
     ### Acerca del reporte de caudal de leads
     
     Este reporte está diseñado para visualizar el volumen de leads recibidos en diferentes franjas horarias, 
-    con un enfoque especial en la franja de 17:00 a 21:00 horas, que es el período de mayor actividad.
+    especialmente de 17:00 a 21:00 horas, período de mayor actividad.
     
     #### Métricas clave:
     - **Cantidad total de leads:** Número total de leads recibidos en el período seleccionado.
@@ -216,7 +216,7 @@ with st.expander("ℹ️ Información sobre este reporte"):
     
     #### Notas:
     - Los domingos pueden ser excluidos del análisis según se requiera.
-    - La franja horaria de 17:00 a 21:00 es analizada en detalle según los requerimientos específicos.
+    - La franja horaria de 17:00 a 21:00 es analizada en mayor detalle según lo pedido.
     """)
 
 # Pie de página

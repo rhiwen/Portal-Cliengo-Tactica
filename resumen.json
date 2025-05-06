@@ -1,0 +1,35 @@
+{
+    "data": [
+      {
+        "Vendedor": "Sofía",
+        "Cantidad_asignado": 10,
+        "Cantidad_llamado": 5,
+        "Cantidad_descartado": 2,
+        "Contactado": 8
+      },
+      {
+        "Vendedor": "Stefania",
+        "Cantidad_asignado": 12,
+        "Cantidad_llamado": 6,
+        "Cantidad_descartado": 3,
+        "Contactado": 9
+      },
+      {
+        "Vendedor": "Florencia",
+        "Cantidad_asignado": 8,
+        "Cantidad_llamado": 4,
+        "Cantidad_descartado": 1,
+        "Contactado": 7
+      },
+      {
+        "Vendedor": "Total",
+        "Cantidad_asignado": 30,
+        "Cantidad_llamado": 15,
+        "Cantidad_descartado": 6,
+        "Contactado": 24
+      }
+    ],
+    "error": false,
+    "mensaje": "Resumen de ventas por vendedor"
+  }
+  

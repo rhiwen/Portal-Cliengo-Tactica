@@ -6,14 +6,14 @@ from utils.data_loader import cargar_datos, aplicar_filtros
 
 # Configuración de la página
 st.set_page_config(
-    page_title="Detalles de Leads",
+    page_title="Información detallada de Leads",
     page_icon="🔍",
     layout="wide"
 )
 
 # Título principal
-st.title("🔍 Exploración Detallada de Leads")
-st.markdown("Visualización detallada de los datos de leads con opciones avanzadas de filtrado y análisis")
+st.title("🔍 Información detallada de Leads")
+st.markdown("Visualización con opciones avanzadas de filtrado y análisis")
 
 # Cargar datos
 df = cargar_datos()
@@ -300,7 +300,7 @@ with st.expander("ℹ️ Información sobre esta página"):
     st.markdown("""
     ### Acerca de la exploración detallada de leads
     
-    Esta página permite realizar un análisis profundo y detallado de los datos de leads, con opciones avanzadas 
+    Esta página permite realizar un análisis más profundo con opciones avanzadas 
     de filtrado y diferentes tipos de visualizaciones para obtener insights específicos.
     
     #### Funcionalidades principales:
@@ -311,7 +311,7 @@ with st.expander("ℹ️ Información sobre esta página"):
     
     #### Notas:
     - Esta página está diseñada para usuarios avanzados que necesitan un análisis más detallado de los datos.
-    - En futuras versiones, se implementará la conexión directa a la API de Táctica para obtener datos en tiempo real.
+    - En futuras versiones, se implementará la conexión directa a la API de Tactica para obtener datos en tiempo real.
     """)
 
 # Pie de página
