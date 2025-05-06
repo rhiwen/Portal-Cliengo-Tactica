@@ -12,6 +12,16 @@ st.set_page_config(
     layout="wide"
 )
 
+# Verificar autenticación
+if not st.session_state.get("authenticated", False):
+    st.warning("Por favor inicie sesión para acceder a esta página")
+    st.stop()
+
+# Verificar rol
+if st.session_state.role != "admin":
+    st.error("No tiene permisos para acceder a esta página")
+    st.stop()
+
 # Título principal
 st.title("📈 Caudal de Leads por Horario")
 st.markdown("Análisis del volumen de leads recibidos por franja horaria, con enfoque en la franja de 17:00 a 21:00 horas")

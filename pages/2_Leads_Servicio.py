@@ -11,6 +11,16 @@ st.set_page_config(
     layout="wide"
 )
 
+# Verificar autenticación
+if not st.session_state.get("authenticated", False):
+    st.warning("Por favor inicie sesión para acceder a esta página")
+    st.stop()
+
+# Verificar rol
+if st.session_state.role != "admin":
+    st.error("No tiene permisos para acceder a esta página")
+    st.stop()
+
 # Título principal
 st.title("📋 Leads por Categoría y Servicio")
 st.markdown("Análisis de la distribución de leads por tipo de servicio, categoría y canal de origen")
