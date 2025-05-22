@@ -1,28 +1,28 @@
 {
     "data": [
       {
-        "Vendedor": "Sofía",
+        "Agente": "Sofía",
         "Cantidad_asignado": 10,
         "Cantidad_llamado": 5,
         "Cantidad_descartado": 2,
         "Contactado": 8
       },
       {
-        "Vendedor": "Stefania",
+        "Agente": "Stefania",
         "Cantidad_asignado": 12,
         "Cantidad_llamado": 6,
         "Cantidad_descartado": 3,
         "Contactado": 9
       },
       {
-        "Vendedor": "Florencia",
+        "Agente": "Florencia",
         "Cantidad_asignado": 8,
         "Cantidad_llamado": 4,
         "Cantidad_descartado": 1,
         "Contactado": 7
       },
       {
-        "Vendedor": "Total",
+        "Agente": "Total",
         "Cantidad_asignado": 30,
         "Cantidad_llamado": 15,
         "Cantidad_descartado": 6,
@@ -30,6 +30,6 @@
       }
     ],
     "error": false,
-    "mensaje": "Resumen de ventas por vendedor"
+    "mensaje": "Resumen de leads por Agente"
   }
   
