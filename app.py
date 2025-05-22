@@ -3,13 +3,16 @@ from utils.data_loader import cargar_datos
 import pandas as pd
 import hmac
 import json
+from datetime import datetime
+import pytz  # tener pytz instalado
+import time
 
 # Configuración básica de la página
 st.set_page_config(
     page_title="Portal SPS: Cliengo-Tactica",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # Inicializar el estado de la sesión
@@ -19,6 +22,10 @@ if "username" not in st.session_state:
     st.session_state.username = ""
 if "role" not in st.session_state:
     st.session_state.role = ""
+
+# Inicializar la hora de la última actualización
+if "last_update" not in st.session_state:
+    st.session_state.last_update = datetime.now()
 
 def check_password(username, password):
     # Verificar si el usuario existe en secrets.toml
@@ -56,55 +63,35 @@ def logout():
 if not st.session_state.authenticated:
     login()
 else:
-    st.title(f"Bienvenido, {st.session_state.username}")
-    st.write(f"Rol: {st.session_state.role}")
-    
-    if st.button("Cerrar Sesión"):
+    # Mostrar el mensaje de bienvenida en la barra lateral
+    st.sidebar.write(f"Bienvenido, {st.session_state.username}. (rol: {st.session_state.role})")
+    if st.sidebar.button("Cerrar Sesión"):
         logout()
 
     # Estilos CSS personalizados
     st.markdown("""
         <style>
         .main-header {
-            font-size: 2.5rem;
+            font-size: 3rem;  /* Aumentar tamaño de fuente */
             color: #003366;
             text-align: center;
             margin-bottom: 1rem;
         }
         .sub-header {
-            font-size: 1.5rem;
+            font-size: 2rem;  /* Aumentar tamaño de fuente */
             color: #0066cc;
             margin-bottom: 0.5rem;
+            font-weight: bold;  /* Títulos en negrita */
         }
         .card {
-            /*background-color: #f8f9fa;*/
             border-radius: 0.5rem;
-            padding: 1.5rem;
+            padding: 2rem;  /* Aumentar padding */
             box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
             margin-bottom: 1rem;
+            width: 100%;  /* Hacer que el cuadro ocupe toda la pantalla */
         }
         </style>
         """, unsafe_allow_html=True)
-
-    # Título y descripción
-    st.markdown('<h1 class="main-header">🔔 Portal de Leads SPS: Cliengo - Tactica</h1>', unsafe_allow_html=True)
-
-    # Información principal
-    st.markdown("""
-    <div class="card">
-    <h2 class="sub-header">Bienvenido al Portal de Leads de SPS</h2>
-    <p>Esta aplicación permite visualizar y analizar el flujo de leads que ingresan a través de Cliengo 
-    (Chatbot y WhatsApp) mediante su integración con el CRM Tactica.</p>
-
-    <p>👈 Usá la barra lateral para navegar entre las diferentes secciones:</p>
-    <ul>
-        <li><b>Página Principal</b>: Resumen general acotado por Vendedor y Estado</li>
-        <li><b>Leads por Horario</b>: Análisis del caudal de leads por franjas horarias</li>
-        <li><b>Leads por Servicio</b>: Distribución de leads por categoría y servicio</li>
-        <li><b>Detalles</b>: Exploración detallada de todos los datos y descarga en CSV</li>
-    </ul>
-    </div>
-    """, unsafe_allow_html=True)
 
     # Cargar datos una sola vez
     df = cargar_datos()
@@ -119,20 +106,43 @@ else:
     else:
         # Convertir la lista de datos a un DataFrame
         resumen_df = pd.DataFrame(resumen_data['data'])
-        
-        # Mostrar el DataFrame de leads en Streamlit
-        #st.markdown('<h2 class="sub-header">Leads</h2>', unsafe_allow_html=True)
-        #st.dataframe(leads_df)  # Mostrar el DataFrame de leads
 
-        # Mostrar el DataFrame de resumen en Streamlit
-        st.markdown('<h2 class="sub-header">Resumen de Ventas por Vendedor</h2>', unsafe_allow_html=True)
-        st.dataframe(resumen_df)
+        # Mostrar la hora actual y la última actualización
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.markdown('<h3 class="main-header">🔔 Leads hasta el momento</h3>', unsafe_allow_html=True)
+    with col2:
+    # Obtener la hora local de Buenos Aires
+        buenos_aires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
+        current_time = datetime.now(buenos_aires_tz).strftime('%H:%M')
+        last_update_time = st.session_state.last_update.astimezone(buenos_aires_tz).strftime('%H:%M')  # Corregido
+        st.markdown(f"<h3>{current_time}</h3> <i>Última act.:</i> {last_update_time}", unsafe_allow_html=True)
 
+
+    # Mostrar el Resumen de Leads por Agente
+    st.dataframe(resumen_df, use_container_width=True, hide_index=True)
+
+    # Información principal
+    st.markdown("""
+    <div class="card">
+    <h2 class="sub-header">Bienvenido al Portal de Leads de SPS</h2>
+    <p>Esta aplicación permite visualizar y analizar el flujo de leads que ingresan a través de Cliengo 
+    (Chatbot y WhatsApp) mediante su integración con el CRM Tactica.</p>
+
+    <p>👈 Usá la barra lateral para navegar entre las diferentes secciones:</p>
+    <ul>
+        <li><b>Página Principal</b>: Resumen general acotado por Agente y Estado</li>
+        <li><b>Leads por Horario</b>: Análisis del caudal de leads por franjas horarias</li>
+        <li><b>Leads por Servicio</b>: Distribución de leads por categoría y servicio</li>
+        <li><b>Detalles</b>: Exploración detallada de todos los datos y descarga en CSV</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
     # Información adicional
     st.markdown("""
     <div class="card">
-    <h2 class="sub-header">Sobre los datos</h2>
+    <h3 class="sub-header">Sobre los datos</h3>
     <p>- Actualmente los datos se cargan desde archivos JSON (en el caso del cuadro superior)
     y CSV (en las demás páginas) de prueba. Próximamente
     se implementará la conexión directa a la API de Tactica para obtener datos en tiempo real.</p>
