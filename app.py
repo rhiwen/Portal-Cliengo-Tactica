@@ -107,18 +107,35 @@ else:
         # Convertir la lista de datos a un DataFrame
         resumen_df = pd.DataFrame(resumen_data['data'])
 
-        # Mostrar la hora actual y la última actualización
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.markdown('<h3 class="main-header">🔔 Leads hasta el momento</h3>', unsafe_allow_html=True)
-    with col2:
+
     # Obtener la hora local de Buenos Aires
-        buenos_aires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
-        current_time = datetime.now(buenos_aires_tz).strftime('%H:%M')
-        last_update_time = st.session_state.last_update.astimezone(buenos_aires_tz).strftime('%H:%M')  # Corregido
-        st.markdown(f"<h3>{current_time}</h3> <i>Última act.:</i> {last_update_time}", unsafe_allow_html=True)
+    baires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
+    current_time = datetime.now(baires_tz).strftime('%H:%M')
+    current_date = datetime.now(baires_tz).strftime('%d/%m/%Y')
+    last_update_time = st.session_state.last_update.astimezone(baires_tz).strftime('%d/%m/%Y - %H:%M')  # Corregido
 
+        # Mostrar la hora actual y la última actualización
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col1:
+        st.image("assets/SPS.png", use_container_width=True)
+    with col2:
+        st.markdown('<h4 style="text-align: center;">🔔 Leads hasta el momento 🔔</h4>', unsafe_allow_html=True)
+        st.markdown(f'<p style="text-align: center;"><i>Última actualización: {last_update_time}</i></p>', unsafe_allow_html=True)
+    with col3:
+        st.markdown(f'<h3 style="text-align: right;"> {current_time} </h3>', unsafe_allow_html=True)
+        st.markdown(f'<p style="text-align: right;padding-right:1.5rem"> {current_date} </p>', unsafe_allow_html=True)
 
+    # Estilo en CSS hardcodeado para la tabla
+    st.markdown(
+    """
+    <style>
+    .st-emotion-cache-1jicfl2 {
+        font-size: 52px !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+    )
     # Mostrar el Resumen de Leads por Agente
     st.dataframe(resumen_df, use_container_width=True, hide_index=True)
 

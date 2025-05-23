@@ -14,7 +14,6 @@ venv/
 Thumbs.db
 
 # Streamlit
-.streamlit/config.toml
 .streamlit/secrets.toml
 
 # Archivos temporales
